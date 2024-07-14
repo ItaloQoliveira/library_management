@@ -1,8 +1,0 @@
-<h1>Books</h1>
-<ul>
-{% for book in object_list %}
-    <li>{{ book.published_date|date }} - {{ book.title }} - {{book.author}} - {{book.isbn_number}} - {{book.price}}</li>
-{% empty %}
-    <li>No books yet.</li>
-{% endfor %}
-</ul>
