@@ -2,6 +2,7 @@ from books.models import Book
 from django.http import JsonResponse, HttpResponse
 from django.views.decorators.http import require_http_methods
 import json
+from django.shortcuts import get_object_or_404
 
 @require_http_methods(["GET"])
 def book_list(request):
@@ -15,12 +16,10 @@ def book_list(request):
         "price": book.price} for book in books]
     return JsonResponse(data, safe=False,status = 200)
 
-@require_http_methods(["Get"])
+@require_http_methods(["GET"])
 def book_detail(request, pk):
-    try:
-        book= Book.objects.get(pk=pk)
-    except Book.DoesNotExist:
-        return HttpResponse(status= 404)
+    
+    book = get_object_or_404(Book, pk= pk)
     
     data = {
         "id": book.id, 
