@@ -42,3 +42,32 @@ def book_create(request):
     book.save()
 
     return JsonResponse({"id": book.id, "title": book.title, "author": book.author, "published_date": book.published_date, "isbn_number": book.isbn_number, "price": book.price})
+
+
+@require_http_methods(["PATCH"])
+def book_update(request, pk):
+    book = get_object_or_404(Book, pk=pk)
+    data = json.loads(request.body)
+    
+    for field, value in data.items(): #Dinamicamente atribui o que foi passado para atualizaçao
+            setattr(book, field, value)
+    book.save()
+    
+    updateddata = {
+        "id": book.id, 
+        "title": book.title, 
+        "author": book.author, 
+        "published_date": book.published_date, 
+        "isbn_number": book.isbn_number, 
+        "price": book.price}
+
+    return JsonResponse(updateddata,status = 200)
+
+
+@require_http_methods(['DELETE'])
+def book_delete(request, pk):
+    book = get_object_or_404(Book, pk=pk)
+    
+    book.delete()
+
+    return HttpResponse(status = 204)
